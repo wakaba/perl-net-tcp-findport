@@ -1,0 +1,17 @@
+{
+    main_module_name => 'Net::TCP::FindPort',
+    file_names => [qw(
+        lib/Net/TCP/FindPort.pm
+        lib/Net/TCP/FindPort.pod
+        t/net-tcp-findport.t
+        config/net-tcp-findport.pi
+    )],
+    req_modules => {
+        'Socket' => 0,
+    },
+    t_req_modules => {
+        'Path::Class' => 0,
+        'Test::More' => 0,
+        'Test::Class' => 0,
+    },
+};

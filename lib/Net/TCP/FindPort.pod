@@ -1,0 +1,66 @@
+=head1 NAME
+
+Net::TCP::FindPort - Find a listenable TCP port
+
+=head1 SYNOPSIS
+
+  use Net::TCP::FindPort;
+  warn Net::TCP::FindPort->find_listenable_port;
+
+=head1 DESCRIPTION
+
+The C<Net::TCP::FindPort> module provides methods to obtain a TCP port
+number that can be listened by a new server process.
+
+=head1 METHODS
+
+All methods are class methods.
+
+=over 4
+
+=item Net::TCP::FindPort->find_listenable_port
+
+Returns a listenable TCP port number.  If no port is available, the
+method dies.
+
+Note that the returned port might not be really available for
+listening by the server process, if the port is listened by another
+process after the testing of this method.
+
+=item Net::TCP::FindPort->is_listenable_port(PORT)
+
+Returns whether the given I<PORT> can be listened or not.
+
+=item Net::TCP::FindPort->clear_cache
+
+Clears the cached list of known non-listenable ports.  The class
+caches the list of known non-listenable ports.  Any port returned by
+C<find_listenable_port> as "listenable" is also marked as
+non-listenable (although the port is still listenable until it is
+really listened by some process from the viewpoint of the TCP/IP
+protocol stack).
+
+=back
+
+=head1 HISTORY
+
+=over 4
+
+=item 1.0 (2010-08-05)
+
+First version.
+
+=back
+
+=head1 AUTHOR
+
+Wakaba (id:wakabatan) <wakabatan@hatena.ne.jp>
+
+=head1 LICENSE
+
+Copyright 2010 Hatena <http://www.hatena.ne.jp/>
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
