@@ -1,25 +1,35 @@
-package test::Net::TCP::FindPort;
 use strict;
+BEGIN {
+    my $file_name = __FILE__; $file_name =~ s{[^/\\]+$}{}; $file_name ||= '.';
+    $file_name .= '/../config/perl/libs.txt';
+    if (-f $file_name) {
+        open my $file, '<', $file_name or die "$0: $file_name: $!";
+        unshift @INC, split /:/, <$file>;
+    }
+}
 use warnings;
-use Path::Class;
-use lib file(__FILE__)->dir->parent->subdir('lib')->stringify;
-use base qw(Test::Class);
+use Test::X1;
 use Test::More;
 use Net::TCP::FindPort;
 
-sub _is_listenable_port_ng : Test(2) {
+test {
+    my $c = shift;
     ok !Net::TCP::FindPort->is_listenable_port(0);
 
     # A well-known port
     ok !Net::TCP::FindPort->is_listenable_port(70);
-}
+    done $c;
+} n => 2, name => 'is_listenable_port ng';
 
-sub _is_listenable_port_locked : Test(1) {
+test {
+    my $c = shift;
     my $p1 = Net::TCP::FindPort->find_listenable_port;
     ok !Net::TCP::FindPort->is_listenable_port($p1);
-}
+    done $c;
+} n => 1, name => 'is_listenable_port locked';
 
-sub _find_listenable_port : Test(9) {
+test {
+    my $c = shift;
     my $p1 = Net::TCP::FindPort->find_listenable_port;
     ok $p1;
     ok $p1 > 1023;
@@ -34,8 +44,7 @@ sub _find_listenable_port : Test(9) {
     ok $p3 > 1023;
     isnt $p3, $p1;
     isnt $p3, $p2;
-}
+    done $c;
+} n => 9, name => 'find_listenable_port';
 
-__PACKAGE__->runtests;
-
-1;
+run_tests;
